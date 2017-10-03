@@ -1,13 +1,15 @@
-var emoji = require('./emoji.json')
-console.log(emoji[0])
+var emoji = require('./src/components/emoji.json')
+
 
 function findWord(word){
-    var Regex = new RegExp(word, 'i')
-    var final = []
-    emojis.forEach(function(item, index){
-      if(Regex.test(item.keywords)=== true){
-        final.push({title : item.title,symbol:item.symbol})
-      }
-    })
-    return final
-  }
+  var Regex = new RegExp(word, 'i')
+ var firstChoice = emoji.filter(function(item){
+   return item.title === word
+  })
+ var secondChoice = emoji.filter(function(item){
+   return Regex.test(item.keywords)
+ }) 
+ return firstChoice.concat(secondChoice)
+}
+
+console.log(findWord('Grin'))
