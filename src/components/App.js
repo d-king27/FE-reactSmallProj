@@ -6,8 +6,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      emojis: emoji,
-      display: {title:'', symbol: '@'},
       value: ''
     }
     this.handleChange = this.handleChange.bind(this);
@@ -15,25 +13,35 @@ class App extends React.Component {
   }
 
   findEmojiData(word) {
+    if(word === ''){return []}
     var Regex = new RegExp(word, 'i')
-    var newDisplay = {}
-    this.state.emojis.forEach(function (item, index) {
-      if (Regex.test(item.keywords) === true) {
-        newDisplay.title = item.title
-        newDisplay.symbol = item.symbol
-      }
+   var firstChoice = emoji.filter(function(item){
+     return Regex.test(item.title)
     })
-      this.setState({
-      display: {title:newDisplay.title,symbol:newDisplay.symbol}
-    })
-    console.log(this.state.display)
-}
+   if(firstChoice.length > 0){return firstChoice}
+   else{
+     return emoji.filter(function(item){
+       return Regex.test(item.keywords)
+     })
+   }
+  }
+  
 
 handleChange (event) {
   const newValue = event.target.value;
   this.setState({
     value: newValue
   })
+}
+
+renderEmojis(arr){
+  return (arr.map(function(item){
+    return <DisplayBox 
+    title = {item.title}
+    symbol = {item.symbol}
+    />
+  })
+  )
 }
 
  
@@ -46,10 +54,8 @@ handleChange (event) {
         handleChange = {this.handleChange}
         findEmojiData = {this.findEmojiData}
          />
-         <DisplayBox
-         title = {this.state.display.title}
-         symbol = {this.state.display.symbol}/>
-      </div>
+         {this.renderEmojis(this.findEmojiData(this.state.value))}
+         </div>
     );
   }
 }

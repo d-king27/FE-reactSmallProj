@@ -18,7 +18,6 @@ class FormBar extends React.Component {
         <div>
         <form>
           <textarea onChange={this.props.handleChange} value={this.props.value}></textarea>
-          <input type='submit' onClick = {this.handleSubmit}/>
         </form>
       </div>
     );
